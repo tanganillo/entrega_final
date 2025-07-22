@@ -1,0 +1,52 @@
+{% extends 'padre.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow-sm">
+        {% if noticia.imagen %}
+          <img src="{{ noticia.imagen.url }}" class="card-img-top img-fluid" alt="Imagen de la noticia">
+        {% endif %}
+        <div class="card-body">
+          <h2 class="fw-bold">{{ noticia.titulo }}</h2>
+          <p class="text-muted">✍️ Publicado por: {{ noticia.autor.username }}</p>
+          <p class="text-muted">{{ noticia.fecha }}</p>
+            <p><strong>🎼 Género:</strong> {{ noticia.genero|title }}</p>
+            <p><strong>✍️ Autor:</strong> {{ noticia.autor.username }}</p>
+            {% if noticia.etiquetas %}
+                <p><strong>🏷️ Etiquetas:</strong> {{ noticia.etiquetas }}</p>
+            {% endif %}
+
+          <hr>
+          <p class="fs-5">{{ noticia.contenido|linebreaks }}</p>
+            <div class="d-flex justify-content-between mt-5">
+                {% if anterior %}
+                    <a href="{% url 'detalle-noticia' anterior.pk %}" class="btn btn-outline-secondary">
+                        ⬅️ Anterior
+                    </a>
+                {% else %}
+                    <span></span>
+                {% endif %}
+
+                {% if siguiente %}
+                    <a href="{% url 'detalle-noticia' siguiente.pk %}" class="btn btn-outline-secondary">
+                        Siguiente ➡️
+                    </a>
+                {% endif %}
+            </div>
+
+          <div class="mt-4 d-flex justify-content-between">
+            <a href="{% url 'lista-noticias' %}" class="btn btn-outline-secondary">⬅️ Volver a todas las noticias</a>
+            {% if user.is_authenticated %}
+              <div>
+                <a href="{% url 'editar-noticia' noticia.pk %}" class="btn btn-outline-primary me-2">✏️ Editar</a>
+                <a href="{% url 'eliminar-noticia' noticia.pk %}" class="btn btn-outline-danger">🗑️ Eliminar</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

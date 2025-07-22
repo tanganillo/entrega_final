@@ -1,0 +1,31 @@
+{% extends 'padre.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card border-danger shadow-sm">
+        <div class="card-body text-center">
+          <h2 class="text-danger fw-bold">⚠️ ¿Estás seguro que querés eliminar esta noticia?</h2>
+          <p class="fs-5 my-3">Esta acción no se puede deshacer.<br>
+            Vas a borrar la publicación titulada:</p>
+          <h4 class="text-dark">“{{ noticia.titulo }}”</h4>
+
+          {% if noticia.imagen %}
+            <img src="{{ noticia.imagen.url }}" alt="Imagen de la noticia" class="img-fluid rounded mt-4 mb-3 shadow" style="max-height: 300px;">
+          {% endif %}
+
+          <form method="post" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+              🗑️ Sí, eliminar definitivamente
+            </button>
+            <a href="{% url 'detalle-noticia' noticia.pk %}" class="btn btn-outline-secondary ms-2">
+              ↩️ Cancelar y volver
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -6,6 +6,7 @@ from .models import Perfil
 from .forms import EditarPerfilForm
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.views.decorators.http import require_POST
 
 def profile(request):
     return render(request, 'usuarios/profile.html')
@@ -16,7 +17,7 @@ def registro(request):
         form = RegistroForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            perfil = Perfil.objects.get(user=user)
+            perfil, creado = Perfil.objects.get_or_create(user=user)
             perfil.nombre = form.cleaned_data.get('first_name')
             perfil.apellido = form.cleaned_data.get('last_name')
             perfil.avatar = form.cleaned_data.get('avatar')
@@ -51,3 +52,18 @@ def cerrar_sesion(request):
     logout(request)
     messages.info(request, "👋 Cerraste sesión exitosamente. ¡Te esperamos pronto!")
     return redirect('login')
+
+@login_required
+@require_POST
+def eliminar_perfil(request):
+    perfil = request.user.perfil
+    perfil.delete()
+    logout(request)
+    messages.success(request, "🗑️ Perfil eliminado. Cerraste sesión automáticamente.")
+    return redirect('home')
+
+
+@login_required
+def listar_perfiles(request):
+    perfiles = Perfil.objects.select_related('user').all()
+    return render(request, 'usuarios/listar_perfiles.html', {'perfiles': perfiles})

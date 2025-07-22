@@ -13,21 +13,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Estilo propio -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body style="font-family: 'Raleway', sans-serif; background-color: #fdfcf9;">
+<body style="font-family: 'Raleway', sans-serif; background-color: #ffffff">
 
+    <!-- 🎵 Logo principal arriba del navbar -->
+    <div class="text-center py-3 logo-superior">
+        <img src="{% static 'img/logo_blog.png' %}" alt="Logo Tanganillo" class="img-fluid" style="max-height: 120px;">
+    </div>
     <!-- Barra de navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'home' %}">🎶 Noticias Musicales</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMusic">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-dark" href="{% url 'home' %}">
+        🎶 Noticias Musicales
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMusic">
+      <span class="navbar-toggler-icon"></span>
+    </button>
             <div class="collapse navbar-collapse" id="navbarMusic">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Noticias</a></li>
+                    {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li> {% endcomment %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lista-noticias' %}">Noticias</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Sobre mí</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -38,6 +45,13 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Entrar</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'registro' %}">Registrarse</a></li>
                     {% endif %}
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'listar-perfiles' %}" class="btn btn-outline-info mt-0 ms-2">
+                            👥 Ver usuarios registrados
+                        </a>
+                    {% endif %}
+
                 </ul>
             </div>
         </div>
@@ -46,6 +60,14 @@
     <!-- Contenido principal -->
     <main class="container py-4">
         {% block content %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% endblock %}
     </main>
 

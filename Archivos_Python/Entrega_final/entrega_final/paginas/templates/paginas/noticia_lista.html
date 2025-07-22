@@ -1,0 +1,76 @@
+{% extends 'padre.html' %}
+{% load static %}
+{% block content %}
+
+<!-- 🔍 Buscador -->
+<form method="get" class="mb-4">
+  <div class="input-group">
+    <input type="text" name="q" class="form-control" placeholder="🔍 Buscar por artista, género o palabra clave..." value="{{ request.GET.q }}">
+    <button type="submit" class="btn btn-outline-secondary">Buscar</button>
+  </div>
+</form>
+
+<!-- 🎧 Resultados y feedback de búsqueda -->
+{% if request.GET.q %}
+  <p class="text-muted">🎧 Resultados para: <strong>{{ request.GET.q }}</strong></p>
+  {% if noticias|length == 0 %}
+    <div class="alert alert-warning text-center">
+      🎶 No se encontraron noticias con el criterio: <strong>{{ request.GET.q }}</strong>
+    </div>
+  {% endif %}
+{% endif %}
+
+<!-- 📰 Título y botón de creación -->
+<div class="container mt-5">
+  <h2 class="text-center fw-bold mb-4">📰 Noticias musicales</h2>
+
+  {% if user.is_authenticated %}
+    <div class="text-end mb-4">
+      <a href="{% url 'crear-noticia' %}" class="btn btn-dark">📢 Crear nueva noticia</a>
+    </div>
+  {% endif %}
+
+  <!-- ✅ Mensajes -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success text-center">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- 🎵 Tarjetas de noticias -->
+  {% if noticias %}
+    <div class="row">
+      {% for noticia in noticias %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+
+            {% if noticia.imagen %}
+              <img src="{{ noticia.imagen.url }}" class="card-img-top" alt="Imagen de noticia">
+            {% else %}
+              <img src="{% static 'default_noticia.jpg' %}" class="card-img-top" alt="Imagen por defecto">
+            {% endif %}
+
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ noticia.titulo }}</h5>
+              <p class="card-text">{{ noticia.contenido|truncatewords:20 }}</p>
+              <small class="text-muted mt-auto">📅 {{ noticia.fecha }}</small>
+            </div>
+
+            <div class="card-footer bg-transparent border-0 text-center">
+              <a href="{% url 'detalle-noticia' noticia.pk %}" class="btn btn-outline-dark btn-sm">🎧 Ver más</a>
+              {% if user.is_authenticated %}
+                <a href="{% url 'editar-noticia' noticia.pk %}" class="btn btn-outline-primary btn-sm ms-2">✏️ Editar</a>
+                <a href="{% url 'eliminar-noticia' noticia.pk %}" class="btn btn-outline-danger btn-sm ms-2">🗑️ Eliminar</a>
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center">🎵 Aún no hay noticias musicales publicadas.</div>
+  {% endif %}
+</div>
+
+{% endblock %}
