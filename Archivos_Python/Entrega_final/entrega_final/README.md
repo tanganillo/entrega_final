@@ -23,7 +23,7 @@ pip install -r requirements.txt
 python manage.py runserver
 
 
-👉 Link a mi video: (acá podés pegar el enlace cuando lo tengas)
+👉 Link a mi video: https://www.loom.com/share/a396f9102c3c45779f69c403ccb956e7
 
 
 
