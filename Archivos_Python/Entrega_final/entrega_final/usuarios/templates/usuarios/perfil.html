@@ -1,0 +1,32 @@
+{% extends 'padre.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            {% if perfil.avatar %}
+                <img src="{{ perfil.avatar.url }}" class="rounded-circle mb-3" width="150" alt="Avatar">
+            {% else %}
+                <img src="/media/avatares/default.png" class="rounded-circle mb-3" width="150" alt="Avatar por defecto">
+            {% endif %}
+            <h2 class="fw-bold">{{ request.user.username }}</h2>
+            <p>📧 {{ perfil.email }}</p>
+            <p>👤 {{ perfil.nombre }} {{ perfil.apellido }}</p>
+            <a href="{% url 'editar-perfil' %}" class="btn btn-outline-dark mt-3">Editar perfil</a>
+            <a href="{% url 'password_change' %}" class="btn btn-outline-dark mt-3">Cambiar contraseña</a>
+
+            {% if user.is_authenticated %}
+                <form action="{% url 'eliminar-perfil' %}" method="post" onsubmit="return confirm('¿Seguro que querés eliminar tu perfil? Se cerrará tu sesión automáticamente.');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger mt-3">
+                        🗑️ Eliminar perfil
+                    </button>
+                </form>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger mt-3">Cerrar sesión</a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

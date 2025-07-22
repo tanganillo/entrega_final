@@ -1,0 +1,97 @@
+{% extends 'padre.html' %}
+{% load static %}
+{% block content %}
+
+<!-- 🎧 Mensaje de bienvenida -->
+{% if user.is_authenticated %}
+  <h5 class="text-end text-muted me-1">🎧 Bienvenido, {{ user.username }}!</h5>
+{% endif %}
+
+<h2 class="fw-bold text-center mt-2 mb-1">🎤 Lo más destacado</h2>
+
+<!-- 📢 Botón para crear nueva noticia -->
+{% if user.is_authenticated %}
+  <div class="text-end mb-2 me-1">
+    <a href="{% url 'crear-noticia' %}" class="btn btn-outline-primary">
+      📢 Crear nueva noticia
+    </a>
+  </div>
+{% endif %}
+
+<!-- 🎞 Carrusel con las 4 últimas -->
+{% if ultimas %}
+  <div id="noticiasCarrusel" class="carousel slide carousel-fade mt-2" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-inner">
+      {% for noticia in ultimas %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %} d-flex flex-column align-items-center justify-content-center">
+
+          <!-- 🎨 Imagen -->
+          <a href="{% url 'detalle-noticia' noticia.pk %}" aria-label="Ver detalle de {{ noticia.titulo }}">
+            {% if noticia.imagen and noticia.imagen.url %}
+              <img src="{{ noticia.imagen.url }}" class="carrusel-imagen" alt="Imagen de {{ noticia.titulo }}">
+            {% else %}
+              <img src="{% static 'img/default_noticia.jpg' %}" class="carrusel-imagen" alt="Imagen por defecto">
+            {% endif %}
+          </a>
+
+          <!-- 📝 Título -->
+          <h5 class="mt-3 fw-bold text-center">
+            <a href="{% url 'detalle-noticia' noticia.pk %}" 
+               class="text-dark text-decoration-none" 
+               title="Ver detalles de {{ noticia.titulo }}">
+              {{ noticia.titulo }}
+            </a>
+          </h5>
+
+          <!-- 📄 Texto breve + metadatos -->
+          <div class="mt-2 text-center px-4" style="max-width: 700px;">
+            <p class="mb-1">{{ noticia.contenido|truncatewords:20 }}</p>
+            <small class="text-muted">🗓 {{ noticia.fecha }} | ✍️ {{ noticia.autor.username }}</small>
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- 🎛 Controles del carrusel -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#noticiasCarrusel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#noticiasCarrusel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+{% else %}
+  <div class="alert alert-info text-center mt-4">🎵 No hay noticias recientes para mostrar en el carrusel.</div>
+{% endif %}
+
+<!-- 📚 Sección con 6 noticias anteriores -->
+{% if anteriores %}
+  <h4 class="mt-5 mb-3 fw-bold text-center">📰 Más noticias anteriores</h4>
+  <div class="row justify-content-center px-3">
+    {% for noticia in anteriores %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          <a href="{% url 'detalle-noticia' noticia.pk %}">
+            {% if noticia.imagen and noticia.imagen.url %}
+              <img src="{{ noticia.imagen.url }}" class="card-img-top" alt="Imagen de {{ noticia.titulo }}">
+            {% else %}
+              <img src="{% static 'img/default_noticia.jpg' %}" class="card-img-top" alt="Imagen por defecto">
+            {% endif %}
+          </a>
+          <div class="card-body">
+            <h6 class="card-title fw-bold text-primary">{{ noticia.titulo }}</h6>
+            <p class="card-text">{{ noticia.contenido|truncatewords:20 }}</p>
+          </div>
+          <div class="card-footer text-muted small text-end">
+            🗓 {{ noticia.fecha }} | ✍️ {{ noticia.autor.username }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% endblock %}

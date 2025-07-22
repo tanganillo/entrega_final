@@ -1,0 +1,29 @@
+{% extends 'padre.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mb-4 fw-bold">🎵 Crea tu cuenta musical</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card p-4 shadow-sm">
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-dark w-100">Registrarse</button>
+                </div>
+            </form>
+            <p class="text-center mt-3">¿Ya tenés cuenta? <a href="{% url 'login' %}">Iniciá sesión</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
