@@ -68,7 +68,14 @@ class NoticiaDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         noticia = self.object
-        context['anterior'] = Noticia.objects.filter(fecha__lt=noticia.fecha).order_by('-fecha').first()
-        context['siguiente'] = Noticia.objects.filter(fecha__gt=noticia.fecha).order_by('fecha').first()
+
+        if noticia.fecha:
+            context['anterior'] = Noticia.objects.filter(fecha__lt=noticia.fecha).order_by('-fecha').first()
+            context['siguiente'] = Noticia.objects.filter(fecha__gt=noticia.fecha).order_by('fecha').first()
+        else:
+            context['anterior'] = None
+            context['siguiente'] = None
+
         return context
+
 
