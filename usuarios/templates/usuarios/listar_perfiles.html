@@ -1,0 +1,27 @@
+{% extends 'padre.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">🎧 Usuarios registrados</h2>
+
+  <div class="row">
+    {% for perfil in perfiles %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm text-center">
+          <img src="{{ perfil.avatar.url }}" class="rounded-circle mx-auto mt-3" style="width: 100px;" alt="Avatar">
+          <div class="card-body">
+            <h5 class="card-title">{{ perfil.nombre }} {{ perfil.apellido }}</h5>
+            <p class="text-muted">@{{ perfil.user.username }}</p>
+            {% if perfil.email %}
+              <p><a href="mailto:{{ perfil.email }}">{{ perfil.email }}</a></p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if perfiles|length == 0 %}
+    <div class="alert alert-info text-center">No hay usuarios registrados aún.</div>
+  {% endif %}
+</div>
+{% endblock %}

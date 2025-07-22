@@ -1,0 +1,71 @@
+{% extends 'padre.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="text-center fw-bold mb-4">📢 Publicá una nueva noticia musical</h2>
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Campo: Título -->
+            <div class="mb-4 ms-3">&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="form-label">{{ form.titulo.label }}</label>
+              {{ form.titulo }}
+              {% if form.titulo.errors %}
+                <div class="text-danger small">{{ form.titulo.errors }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Campo: Contenido -->
+            <div class="mb-4">
+              <label class="form-label">{{ form.contenido.label }}</label>
+              {{ form.contenido }}
+              {% if form.contenido.errors %}
+                <div class="text-danger small">{{ form.contenido.errors }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Campo: Etiquetas -->
+            <div class="mb-4">&nbsp;
+              <label class="form-label">{{ form.etiquetas.label }}</label>
+              {{ form.etiquetas }}
+              {% if form.etiquetas.errors %}
+                <div class="text-danger small">{{ form.etiquetas.errors }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Campo: Imagen -->
+            <div class="mb-4">&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="form-label">{{ form.imagen.label }}</label>
+              {{ form.imagen }}
+              {% if form.imagen.errors %}
+                <div class="text-danger small">{{ form.imagen.errors }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Campo: Género -->
+            <div class="mb-4">&nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="form-label">{{ form.genero.label }}</label>
+              {{ form.genero }}
+              {% if form.genero.errors %}
+                <div class="text-danger small">{{ form.genero.errors }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Botones -->
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-success">🎙️ Publicar noticia</button>
+              <a href="{% url 'lista-noticias' %}" class="btn btn-outline-secondary ms-2">Cancelar</a>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

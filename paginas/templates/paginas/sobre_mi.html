@@ -1,0 +1,25 @@
+{% extends 'padre.html' %}
+{% load static %}
+
+{% block title %}Sobre mí - Blog Musical{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center text-center">
+        <div class="col-md-8">
+            <img src="{% static 'img/avatar_matias.png' %}" alt="Avatar de Matías" class="rounded-circle mb-3" width="150">
+            <h2 class="fw-bold">👋 ¡Hola! Soy Matías</h2>
+            <p class="lead">Desarrollador autodidacta apasionado por la música y la web.</p>
+            <hr>
+            <p>Este blog es mi espacio para compartir noticias del mundo musical: nuevos lanzamientos, festivales, artistas emergentes y más. Combino mi amor por el código con el ritmo de la música para construir algo único.</p>
+            <p><strong>Mis géneros favoritos:</strong> Rock alternativo, Indie, Electrónica 🎧</p>
+            <p><strong>Lenguajes y herramientas:</strong> Django, Python, HTML, Bootstrap, CSS</p>
+            <p><strong>Objetivo del sitio:</strong> Crear una comunidad donde podamos descubrir, debatir y celebrar la música que nos mueve.</p>
+            <blockquote class="blockquote mt-4">
+                <p class="mb-0">“La música expresa lo que no puede decirse con palabras, pero no puede permanecer en silencio.”</p>
+                <br>
+                <footer class="blockquote-footer text-muted">Victor Hugo</footer>
+            </blockquote>
+        </div>
+    </div>
+</div>
+{% endblock %}
